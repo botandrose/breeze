@@ -1,0 +1,10 @@
+{
+  "name": "Breeze",
+  "version": "0.0.1",
+  "description": "An application for checking wind conditions in the Columbia River Gorge.",
+  "main": "server.js",
+  "dependencies": {
+    "express": "3.4.4"
+  },
+  "author": "Arcy Douglas, Kathryn Stoddard, Paul Ogden and Sean Suave"
+}
