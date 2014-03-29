@@ -1,1 +1,9 @@
-Our Awesome App.
+Breeze is a Kite Surfing Weather App which provides weather data for various locations within the Gorge in the Pacific North West. Built using a node.js Express server and Backbone.js.
+
+Locations: 11 existing locations
+
+Information received from the Forecast.io API at https://developer.forecast.io/ -
+Wind Bearing
+Wind Speed
+Temperature
+Current Conditions
