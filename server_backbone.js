@@ -177,14 +177,14 @@ http.createServer(app).listen(app.get('port'), function(){
 
 
 
-app.get('/data', function (req, res) {
-  db.get((ourKey), function (err, data) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(data);
-      res.json(data);
-    }
-  });
-});
+// app.get('/data', function (req, res) {
+//   db.get((ourKey), function (err, data) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       console.log(data);
+//       res.json(data);
+//     }
+//   });
+// });
 
