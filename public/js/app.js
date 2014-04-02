@@ -1,28 +1,40 @@
 define(function (require) {
   var $ = require('jquery');
   var Thorax = require('thorax');
-  var AllScoresView = require('views/all-scores');
-  var ScoresCollect = require('collections/all-scores')     
+  var AllWeatherView = require('views/all-weather');
+  var WeatherCollection = require('collections/all-weather')     
 
   var app = {};
 
-  $.getJSON('/users')
+  $.getJSON('/data')
    .done(startup)
    .fail(function () {
-      $('#loading').html('Your data failed to load :(');
+      $('#loading').html('The data failed to load :(');
    });
   
   function startup (data) {
+    //Output to the data to make sure it is sent from the server to the browser
     console.log(data);
     $('#loading').html('');
 
-    var scoresCollect = new ScoresCollect(data);
-    var allScoresView = new AllScoresView({collection: scoresCollect});
+    app.data = data;
 
+    //Create a new collection based on the weather model
+    var weatherCollection = new WeatherCollection(data);
+
+    //Create a new view based on the weatherCollection
+    var allWeatherView = new AllWeatherView({collection: weatherCollection});
+
+    //Output the collection to test
+    console.log(weatherCollection);
+
+    app.collection = weatherCollection;
+
+    //Instantiate a new instance of a router to display the view
     var router = new (Backbone.Router.extend({
       
       routes: {
-        '': allScoresView
+        '': allWeatherView
       },
       start: function () {
         Backbone.history.start({pushState: true});
@@ -31,7 +43,7 @@ define(function (require) {
 
     router.start()
 
-    app.collection = scoresCollect;
+
 
   }
 

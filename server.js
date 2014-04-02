@@ -28,7 +28,7 @@ url += apiKey + '/'+ latLong;
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-app.use(express.favicon());
+//app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
@@ -186,15 +186,31 @@ function output () {
     //             "Summary: " + data.currently.summary + "\n");
 
     //Added Math round to clean up the numbers
-    console.log("Location: " + location(latLoc.slice(3,7)) + "\n" +
-                "Latitude: " + data.latitude + " degrees" + "\n" +
-                "Longitude: " + data.longitude + " degrees" + "\n" +
-                "Time: " + currentTime.toString() + "\n" +  
-                "Wind Speed: " + Math.round(data.currently.windSpeed) + " mph" + "\n" +
-                "Wind Bearing: " + Math.round(data.currently.windBearing) + " degrees" + "\n" +
-                "Temperature: " + Math.round(data.currently.temperature) + " degrees" + "\n" +
-                "Summary: " + data.currently.summary + "\n");
+    // console.log("Location: " + location(latLoc.slice(3,7)) + "\n" +
+    //             "Latitude: " + data.latitude + " degrees" + "\n" +
+    //             "Longitude: " + data.longitude + " degrees" + "\n" +
+    //             "Time: " + currentTime.toString() + "\n" +  
+    //             "Wind Speed: " + Math.round(data.currently.windSpeed) + " mph" + "\n" +
+    //             "Wind Bearing: " + Math.round(data.currently.windBearing) + " degrees" + "\n" +
+    //             "Temperature: " + Math.round(data.currently.temperature) + " degrees" + "\n" +
+    //             "Summary: " + data.currently.summary + "\n");
 
+
+
+    var currentConditions = { "location" : location(latLoc.slice(3,7)),
+                              "latitude" : data.latitude,
+                              "longitude" : data.longitude,
+                              "time" : currentTime.toString(),
+                              "windSpeed" : Math.round(data.currently.windSpeed),
+                              "windBearing" : Math.round(data.currently.windBearing),
+                              "temperature" : Math.round(data.currently.temperature),
+                              "summary" : data.currently.summary }
+
+    JSON.stringify(currentConditions);
+
+    //Might need comma's between JSON objects
+
+    console.log(currentConditions);
 
   });
 
@@ -243,9 +259,9 @@ function output () {
 //                  "45.552,-122.226"];
 
 //***Standard Express Server Call
-// http.createServer(app).listen(app.get('port'), function(){
-//   console.log('Express server listening on port ' + app.get('port'));
-// });
+http.createServer(app).listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
+});
 
 
 //express projectName
