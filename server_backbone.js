@@ -10,6 +10,7 @@ var routes = require('./routes');
 var http = require('http');
 var https = require('https');
 var path = require('path');
+var pushToOrchestrate = require('./pushToOrchestrate');
 //var request = require('request');
 //var level = require('level');
 
@@ -88,7 +89,8 @@ function httpFunction (urlToFetch, index) {
         counter += 1;
         asyncArray[index] = body;
         if (counter === locations.length) {
-          output();
+
+          pushToOrchestrate(asyncArray);
         }
       });
   });
