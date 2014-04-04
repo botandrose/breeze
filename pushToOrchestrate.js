@@ -1,6 +1,7 @@
 var db = require('orchestrate')('6975512f-cc93-4fc7-97f8-bdfed8ed8b56');
 //var db = require('orchestrate')('893352c5-f1bf-4a27-b61c-31f646586c30');//sean's test DB
-var moment = require('moment');
+var moment = require('moment-timezone');
+//moment().tz("
 
 var pushToOrchestrate = function (arrayOfLocations){
 
@@ -18,7 +19,7 @@ var pushToOrchestrate = function (arrayOfLocations){
       this.windBearing = wind.windBearing;
       this.windDirection = labelDirection(wind.windBearing);
       this.icon = wind.icon;
-      this.time = moment.unix(wind.time);
+      this.time = moment.unix(wind.time).tz("America/Los_Angeles").format();
       this.day = moment.unix(wind.time).format("M/D ddd")
       this.hour = moment.unix(wind.time).format("ddd hA");
       //different time formats for ease of use
@@ -52,7 +53,7 @@ var pushToOrchestrate = function (arrayOfLocations){
     var dailyWind = [];
     //building an array of seven days for location
     daily.forEach(function (day){
-      day.temperature = ((day.temperatureMax+daytemperatureMin)/2).toFixed(1);
+      day.temperature = ((day.temperatureMax+day.temperatureMin)/2).toFixed(1);
       dailyWind.push(new WindInstance(day, data));
     });
 
@@ -78,7 +79,7 @@ var pushToOrchestrate = function (arrayOfLocations){
       var historicInstance = new HistoricInstance(result.body);
       //reducing the current data to the data only relevant to our historical needs
 
-      db.put('historic-today', currentWind.name + dbMintuteStamp, historicInstance);
+      db.put('historic-today', currentWind.name + dbTimeStamp, historicInstance);
       //building history for the day as the day goes on in collection 'historic-today'
 
       db.put('current', currentWind.name, currentWind);
