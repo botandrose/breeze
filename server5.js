@@ -64,45 +64,39 @@ if ('development' == app.get('env')) {
 
 //Async file transfer for the calls to different locations
 
-
-
-var fifteenMinuteUpdate = function(){
-  for (var i = 0; i < locations.length; i++){
-    var location = locations[i];
-    var urlToFetch = forecastURL + apiKey + '/'+ location;
-    httpFunction(urlToFetch, i);
-  }
-
-  function httpFunction (urlToFetch, index) {
-
-    https.get(urlToFetch, function (resp) {
-        //One way to work with the stream is with event handlers: data, error, end
-        var body = '';
-
-        //When the stream emits a data event
-        resp.on('data', function (chunk) {
-          //console.log(chunk.toString());
-          body += chunk;
-        });
-
-        resp.on('error', function (err){
-          console.error(err);
-        });
-
-        resp.on('end', function () {
-          counter += 1;
-          asyncArray[index] = body;
-          if (counter === locations.length) {
-
-            pushToOrchestrate(asyncArray);
-
-          }
-        });
-    });
-  }
+for (var i = 0; i < locations.length; i++){
+  var location = locations[i];
+  var urlToFetch = forecastURL + apiKey + '/'+ location;
+  httpFunction(urlToFetch, i);
 }
-fifteenMinuteUpdate();
 
+function httpFunction (urlToFetch, index) {
+
+  https.get(urlToFetch, function (resp) {
+      //One way to work with the stream is with event handlers: data, error, end
+      var body = '';
+
+      //When the stream emits a data event
+      resp.on('data', function (chunk) {
+        //console.log(chunk.toString());
+        body += chunk;
+      });
+
+      resp.on('error', function (err){
+        console.error(err);
+      });
+
+      resp.on('end', function () {
+        counter += 1;
+        asyncArray[index] = body;
+        if (counter === locations.length) {
+
+          pushToOrchestrate(asyncArray);
+
+        }
+      });
+  });
+}
 
 
 
