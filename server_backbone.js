@@ -89,7 +89,7 @@ function httpFunction (urlToFetch, index) {
         counter += 1;
         asyncArray[index] = body;
         if (counter === locations.length) {
-
+          output();
           pushToOrchestrate(asyncArray);
         }
       });
