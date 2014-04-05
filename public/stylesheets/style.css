@@ -7,5 +7,7 @@ a {
   color: #00B7FF;
 }
 
-table.breeze { table-layout:fixed; }
-table.breeze td { overflow: hidden; }
+
+/*This is causing the table text to overlap*/
+/*table.breeze { table-layout:fixed; }
+table.breeze td { overflow: hidden; }*/

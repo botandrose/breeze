@@ -2,7 +2,9 @@ define(function (require) {
   var $ = require('jquery');
   var Thorax = require('thorax');
   var AllWeatherView = require('views/all-weather');
-  var WeatherCollection = require('collections/all-weather')     
+  var WeatherCollection = require('collections/all-weather')  
+
+  var ChartView = require('views/weather-chart');   
 
   var app = {};
 
@@ -29,6 +31,11 @@ define(function (require) {
     console.log(weatherCollection);
 
     app.collection = weatherCollection;
+
+
+
+    //***D3 chart test we might want to make a JSON file
+    var chartWeatherView = new ChartView({collection: weatherCollection});
 
     //Instantiate a new instance of a router to display the view
     var router = new (Backbone.Router.extend({

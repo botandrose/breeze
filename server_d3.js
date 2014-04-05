@@ -88,7 +88,8 @@ function httpFunction (urlToFetch, index) {
       resp.on('end', function () {
         counter += 1;
         asyncArray[index] = body;
-        if (counter === locations.length) {
+        if (counter === 1) {
+        //if (counter === locations.length) {
           output();
           pushToOrchestrate(asyncArray);
         }
@@ -103,27 +104,67 @@ function output () {
     
     //Send the data as a separate JSON object
     var data = JSON.parse(item);
-    var currentTime = new Date(data.currently.time * 1000);
-    var latLoc = data.latitude.toString();
-  
+    //var currentTime = new Date(data.currently.time * 1000);
+    //var latLoc = data.latitude.toString();
 
+    // var currentConditions = { "location" : location(latLoc.slice(3,7)),
+    //                           "latitude" : data.latitude,
+    //                           "longitude" : data.longitude,
+    //                           "time" : currentTime.toString(),
+    //                           "windSpeed" : Math.round(data.currently.windSpeed),
+    //                           "windBearing" : Math.round(data.currently.windBearing),
+    //                           "temperature" : Math.round(data.currently.temperature),
+    //                           "summary" : data.currently.summary };
 
-    var currentConditions = { "location" : location(latLoc.slice(3,7)),
-                              "latitude" : data.latitude,
-                              "longitude" : data.longitude,
-                              "time" : currentTime.toString(),
-                              "windSpeed" : Math.round(data.currently.windSpeed),
-                              "windBearing" : Math.round(data.currently.windBearing),
-                              "temperature" : Math.round(data.currently.temperature),
-                              "summary" : data.currently.summary };
-
-    JSON.stringify(currentConditions);
+    //JSON.stringify(currentConditions);
 
     //Might need comma's between JSON objects
 
-    console.log(currentConditions);
+    //console.log(currentConditions);
 
-    newOutputArray.push(currentConditions);
+    //newOutputArray.push(currentConditions);
+
+
+   //var temp = data.hourly.summary;
+   //var temp = data.currently;
+   //var temp = data.minutely;
+   // for ( var i = 0; i < 47; i++) {
+   //  var temp = data.hourly.data[i].windSpeed;
+   //  console.log(temp);
+   // }
+   //var temp = data.hourly.data[0].windSpeed;
+
+   var windForecast = [];
+
+   for ( var i = 0; i < 47; i++) {
+    var forecastTime = new Date(data.hourly.data[i].time * 1000);
+    var forecastConditions = {  "time": forecastTime.toString(),
+                                "temperature" : data.hourly.data[i].temperature,
+                                "windSpeed" : data.hourly.data[i].windSpeed,
+                                "windBearing" : data.hourly.data[i].windBearing };
+
+    windForecast.push(forecastConditions);
+    console.log(forecastConditions);
+   }
+
+    //****Data for D3 charts
+    //console.log(data.daily.summary);
+    //console.log(data.hourly.summary);
+    //console.log(temp);
+  
+
+    // var forecastTime = new Date(data.hourly.time * 1000);
+
+    // var forecastConditions = {  "time": forecastTime.toString(),
+    //                             "temperature" : data.hourly.temperature,
+    //                             "wind Speed" : data.hourly.windSpeed,
+    //                             "wind Bearing" : data.hourly.windbearing };
+
+    // //JSON.stringify(forecastConditions);
+    
+    // console.log(forecastConditions);
+
+
 
 
   });
@@ -166,8 +207,12 @@ app.get('/', function(req, res){
 
 
 //***Send data from the server to browser
-app.get('/data', function(req, res){
-  res.json(newOutputArray);
+// app.get('/data', function(req, res){
+//   res.json(newOutputArray);
+// });
+
+app.get('/data', function (req,res) {
+  res.json(windForecast);
 });
 
 

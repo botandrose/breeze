@@ -9,7 +9,8 @@ requirejs.config({
     'hbs'       : 'lib/require-handlebars-plugin/hbs',
     'templates' : '../templates',
     'moment'    : 'lib/moment.min',
-    'bootstrap' : 'lib/bootstrap.min'
+    'bootstrap' : 'lib/bootstrap.min',
+    'd3'        : "lib/d3.min"
   },
 
   shim: {
