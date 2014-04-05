@@ -18,8 +18,9 @@ var pushToOrchestrate = function (arrayOfLocations){
       this.windSpeed = wind.windSpeed;
       this.windBearing = wind.windBearing;
       this.windDirection = labelDirection(wind.windBearing);
-      this.icon = wind.icon;
-      this.time = moment.unix(wind.time).tz("America/Los_Angeles").format();
+      this.icon = makeIconPath(wind.icon);
+      this.summary = wind.summary;
+      this.currentTime = moment.unix(wind.time).tz("America/Los_Angeles").format('M/D hA');
       this.day = moment.unix(wind.time).format("M/D ddd")
       this.hour = moment.unix(wind.time).format("ddd hA");
       //different time formats for ease of use
@@ -30,9 +31,7 @@ var pushToOrchestrate = function (arrayOfLocations){
     //reduced amount of data for an instance to store in out history
       this.temperature = instance.temperature;
       this.windSpeed = instance.windSpeed;
-      this.windBearing = instance.windBearing;
       this.windDirection = instance.windDirection;
-      this.icon = instance.icon;
       this.time = instance.time;
     };
 
@@ -132,6 +131,12 @@ var labelDirection = function (windBearing){
         9: 'SSW', 10: 'SW', 11: 'WSW', 12: 'W', 13: 'WNW', 14: 'NW', 15: 'NNW', 16: 'N' };
     var windDirection = directions[Math.floor((windBearing+11.25)/22.5)];
     return windDirection;
+}
+
+var makeIconPath = function(icon){
+  icon += ".png'";
+  var iconSize = " height='64' width='64' align='left'>";
+  return  "<img src = 'js/images/" + icon + iconSize;
 }
 
 

@@ -6,10 +6,13 @@
 
 var express = require('express');
 var routes = require('./routes');
-var user = require('./routes/user');
+//var user = require('./routes/user');
 var http = require('http');
 var https = require('https');
 var path = require('path');
+var pushToOrchestrate = require('./pushToOrchestrate');
+var db = require('orchestrate')('6975512f-cc93-4fc7-97f8-bdfed8ed8b56');
+var moment = require('moment-timezone');
 //var request = require('request');
 //var level = require('level');
 
@@ -20,9 +23,24 @@ var app = express();
 var latLong = "45.5118,-122.6756";
 var apiKey = "a75c248d7b83806b66b281dd33e96e36";
 //var apiKey = "0d6f859a9a370c9ca1e274fe79d23d8e"; //Current key
-var url ='https://api.forecast.io/forecast/';
 
-url += apiKey + '/'+ latLong;
+var locations = ["45.722,-121.561",
+                 "45.716,-121.512",
+                 "45.687,-121.404",
+                 "45.676,-121.235",
+                 "45.694,-120.755",
+                 "45.729,-120.226",
+                 "45.701,-121.668",
+                 "45.693,-121.878",
+                 "45.696,-121.296",
+                 "45.552,-122.226"];
+
+var locationsLength = locations.length + 1;
+var forecastURL ='https://api.forecast.io/forecast/';
+
+var newOutputArray = [];
+var counter = 0;      //Might be replaced by promises
+var asyncArray = [];  //Might be replaced by promises
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -41,96 +59,12 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.get('/users', user.list);
-
-
-//****This text to terminal from Forecast.io
-//request(url).pipe(process.stdout);
-
-// http.createServer(app).listen(app.get('port'), function(){
-//   console.log('Express server listening on port ' + app.get('port'));
-// });
-//****End
-
-//***Outputs a JSON object from Forecast.io to the terminal
-// request(url, function (err, resp, body) {
-
-//   http.createServer(app).listen(app.get('port'), function(req, resp){
-//     console.log('Express server listening on port ' + app.get('port'));
-
-//      var data = JSON.parse(body);
-
-//      console.log(data);
-//   });
-// });
-//****End
+//app.get('/', routes.index);
+//app.get('/users', user.list);
 
 
 
-//****Test for multiple locations
-// var locations = ["45.722,-121.561",
-//                  "45.716,-121.512",
-//                  "45.687,-121.404" ];
-
-// //var locations = ["45.5118,-122.6756"];
-
-// var forecastURL ='https://api.forecast.io/forecast/';
-
-// locations.forEach( function (item, index) {
-
-//   newUrl = forecastURL + apiKey + '/'+ item;
-
-//   request(newUrl, function (err, resp, body) {
-
-//       http.createServer(app).listen(app.get('port'), function(req, resp){
-//         console.log('Express server listening on port ' + app.get('port'));
-
-//          var data = JSON.parse(body);
-
-//          //console.log(data);
-//          console.log(index);
-
-//         //Turn off the server at the end loop
-//         process.exit();
-
-//         //Async data
-//         //It only prints out the current server call rather than all of them?
-
-//       });
-//   });
-  
-// });
-//***End Test for multiple locations
-
-
-
-
-
-
-//****LearnYouNode Async example lesson 9 might fix closure issue
-//For multiple location requests
-var counter = 0;
-var asyncArray = [];
-// var locations = ["45.722,-121.561",
-//                  "45.716,-121.512",
-//                  "45.687,-121.404" ];
-
-var locations = ["45.722,-121.561",
-                 "45.716,-121.512",
-                 "45.687,-121.404",
-                 "45.676,-121.235",
-                 "45.694,-120.755",
-                 "45.729,-120.226",
-                 "45.701,-121.668",
-                 "45.693,-121.878",
-                 "45.696,-121.296",
-                 "45.552,-122.226"];
-
-var locationsLength = locations.length + 1;
-
-var forecastURL ='https://api.forecast.io/forecast/';
-
+//Async file transfer for the calls to different locations
 for (var i = 0; i < locations.length; i++){
   var location = locations[i];
   var urlToFetch = forecastURL + apiKey + '/'+ location;
@@ -158,6 +92,7 @@ function httpFunction (urlToFetch, index) {
         asyncArray[index] = body;
         if (counter === locations.length) {
           output();
+          pushToOrchestrate(asyncArray);
         }
       });
   });
@@ -165,98 +100,53 @@ function httpFunction (urlToFetch, index) {
 
 //We will probably push to Orchestrate
 function output () {
-  asyncArray.forEach( function(item, index) {
-    //console.log(JSON.parse(item));
-    
-    //Send the data as a separate JSON object
-    var data = JSON.parse(item);
-    var currentTime = new Date(data.currently.time * 1000);
-    var latLoc = data.latitude.toString();
+  var locations= 
+  ["The Hatchery", "Hood River Event Site", "Rock Creek", "Doug's Beach", "Rufus", 
+  "Roosevelt", "Viento", "Stevenson", "Lyle Sand Bar", "Rooster Rock"];
 
-    //console.log(data.currently);
-    //console.log(data.currently.windSpeed);
-    //console.log(data.longitude);
-    // console.log("Location: " + location(latLoc.slice(3,7)) + "\n" +
-    //             "Latitude: " + data.latitude + " degrees" + "\n" +
-    //             "Longitude: " + data.longitude + " degrees" + "\n" +
-    //             "Time: " + currentTime.toString() + "\n" +  
-    //             "Wind Speed: " + data.currently.windSpeed + " mph" + "\n" +
-    //             "Wind Bearing: " + data.currently.windBearing + " degrees" + "\n" +
-    //             "Temperature: " + data.currently.temperature + " degrees" + "\n" +
-    //             "Summary: " + data.currently.summary + "\n");
+  locations.forEach( function(item, index) {
+    var currentConditions;
+    db.get("current", item)
+    .then(function (result) {
+      var data = result.body;
+      console.log("data: ", data);
+      currentConditions = { "location" : data.name,
+                              "icon" : data.icon,
+                              //"latitude" : data.latitude,
+                              //"longitude" : data.longitude,
+                              "time" : data.currentTime,
+                              "windSpeed" : data.windSpeed,
+                              "windDirection": data.windDirection,
+                              "windBearing" : data.windBearing,
+                              "temperature" : data.temperature,
+                              "summary" : data.summary };
+      JSON.stringify(currentConditions);
 
-    //Added Math round to clean up the numbers
-    // console.log("Location: " + location(latLoc.slice(3,7)) + "\n" +
-    //             "Latitude: " + data.latitude + " degrees" + "\n" +
-    //             "Longitude: " + data.longitude + " degrees" + "\n" +
-    //             "Time: " + currentTime.toString() + "\n" +  
-    //             "Wind Speed: " + Math.round(data.currently.windSpeed) + " mph" + "\n" +
-    //             "Wind Bearing: " + Math.round(data.currently.windBearing) + " degrees" + "\n" +
-    //             "Temperature: " + Math.round(data.currently.temperature) + " degrees" + "\n" +
-    //             "Summary: " + data.currently.summary + "\n");
+      //Might need comma's between JSON objects
 
+      console.log('CURRENT: ', currentConditions);
 
-
-    var currentConditions = { "location" : location(latLoc.slice(3,7)),
-                              "latitude" : data.latitude,
-                              "longitude" : data.longitude,
-                              "time" : currentTime.toString(),
-                              "windSpeed" : Math.round(data.currently.windSpeed),
-                              "windBearing" : Math.round(data.currently.windBearing),
-                              "temperature" : Math.round(data.currently.temperature),
-                              "summary" : data.currently.summary }
-
-    JSON.stringify(currentConditions);
-
-    //Might need comma's between JSON objects
-
-    console.log(currentConditions);
-
+      newOutputArray.push(currentConditions);
+    })
+    .fail(function (err) {
+      console.error(err);
+    }) 
   });
-
-  function location (latitude) {
-    var name = "";
-
-    switch(latitude) {
-      case "722":
-         return name = "The Hatchery";
-      case "716":
-         return name = "Hood River Event Site";
-      case "687":
-        return name = "Rock Creek";
-      case "676":
-         return name = "Doug's Beach";
-      case "694":
-        return name = "Rufus";
-      case "729":
-         return name = "Roosevelt";
-      case "701":
-        return name = "Viento";
-      case "693":
-        return name = "Stevenson";
-      case "696":
-        return name = "Lyle Sand Bar";
-      case "552":
-        return name = "Rooster Rock";
-      default:
-         return name = "default";
-    }   
-  }
 }
 
-//****End Example
 
-//Revised Locations with all 9 values
-// var locations = ["45.722,-121.561",
-//                  "45.716,-121.512",
-//                  "45.687,-121.404",
-//                  "45.676,-121.235",
-//                  "45.694,-120.755",
-//                  "45.729,-120.226",
-//                  "45.701,-121.668",
-//                  "45.693,-121.878",
-//                  "45.696,-121.296",
-//                  "45.552,-122.226"];
+//***Launch app by sending index.html to the browser ***
+app.get('/', function(req, res){
+  res.sendfile('./index.html');
+});
+
+
+//***Send data from the server to browser
+app.get('/data', function(req, res){
+  res.json(newOutputArray);
+});
+
+
 
 //***Standard Express Server Call
 http.createServer(app).listen(app.get('port'), function(){
@@ -264,8 +154,15 @@ http.createServer(app).listen(app.get('port'), function(){
 });
 
 
-//express projectName
-//remove html from layout.jade
-//npm install
-//npm install level
-//npm install request
+
+// app.get('/data', function (req, res) {
+//   db.get((ourKey), function (err, data) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       console.log(data);
+//       res.json(data);
+//     }
+//   });
+// });
+
