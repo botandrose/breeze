@@ -10,6 +10,10 @@
     "moment-timezone": "0.0.3",
     "orchestrate": "0.0.9",
     "request": "2.34.0"
+  },
+  "devDependencies": {
+    "zombie": "2.0.0-alpha31",
+    "mocha": "1.18.2"
   }
 }
 
