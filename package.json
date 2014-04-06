@@ -5,7 +5,11 @@
   "main":"server.js",
   "dependencies": {
     "express": "3.5.1",
-    "jade": "*",
-    "level": "~0.18.0"
+    "jake": "0.7.11",
+    "moment": "2.5.1",
+    "moment-timezone": "0.0.3",
+    "orchestrate": "0.0.9",
+    "request": "2.34.0"
   }
 }
+
