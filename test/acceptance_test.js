@@ -8,9 +8,9 @@ var http = require('http');
 describe('homepage', function () {
   
   before(function() {
-    this.server = http.createServer(app).listen(3000);
+    this.server = http.createServer(app).listen(6666);
     // initialize the browser using the same port as the test application
-    this.browser = new Browser({ site: 'http://localhost:3000' });
+    this.browser = new Browser({ site: 'http://localhost:6666' });
   });  
  
   beforeEach(function(done) {
