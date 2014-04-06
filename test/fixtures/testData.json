@@ -1,0 +1,102 @@
+[
+  {
+    "location": "The Hatchery",
+    "latitude": 45.722,
+    "longitude": -121.561,
+    "time": "Sun Apr 06 2014 09:36:52 GMT-0700 (PDT)",
+    "windSpeed": 5,
+    "windBearing": 263,
+    "temperature": 51,
+    "summary": "Overcast"
+  },
+  {
+    "location": "Hood River Event Site",
+    "latitude": 45.716,
+    "longitude": -121.512,
+    "time": "Sun Apr 06 2014 09:36:52 GMT-0700 (PDT)",
+    "windSpeed": 5,
+    "windBearing": 264,
+    "temperature": 53,
+    "summary": "Overcast"
+  },
+  {
+    "location": "Rock Creek",
+    "latitude": 45.687,
+    "longitude": -121.404,
+    "time": "Sun Apr 06 2014 09:36:52 GMT-0700 (PDT)",
+    "windSpeed": 6,
+    "windBearing": 281,
+    "temperature": 51,
+    "summary": "Overcast"
+  },
+  {
+    "location": "Doug's Beach",
+    "latitude": 45.676,
+    "longitude": -121.235,
+    "time": "Sun Apr 06 2014 09:36:52 GMT-0700 (PDT)",
+    "windSpeed": 7,
+    "windBearing": 280,
+    "temperature": 50,
+    "summary": "Overcast"
+  },
+  {
+    "location": "Rufus",
+    "latitude": 45.694,
+    "longitude": -120.755,
+    "time": "Sun Apr 06 2014 09:36:52 GMT-0700 (PDT)",
+    "windSpeed": 8,
+    "windBearing": 281,
+    "temperature": 51,
+    "summary": "Mostly Cloudy"
+  },
+  {
+    "location": "Roosevelt",
+    "latitude": 45.729,
+    "longitude": -120.226,
+    "time": "Sun Apr 06 2014 09:36:52 GMT-0700 (PDT)",
+    "windSpeed": 8,
+    "windBearing": 265,
+    "temperature": 52,
+    "summary": "Partly Cloudy"
+  },
+  {
+    "location": "Viento",
+    "latitude": 45.701,
+    "longitude": -121.668,
+    "time": "Sun Apr 06 2014 09:36:52 GMT-0700 (PDT)",
+    "windSpeed": 6,
+    "windBearing": 259,
+    "temperature": 50,
+    "summary": "Overcast"
+  },
+  {
+    "location": "Stevenson",
+    "latitude": 45.693,
+    "longitude": -121.878,
+    "time": "Sun Apr 06 2014 09:36:52 GMT-0700 (PDT)",
+    "windSpeed": 7,
+    "windBearing": 245,
+    "temperature": 51,
+    "summary": "Overcast"
+  },
+  {
+    "location": "Lyle Sand Bar",
+    "latitude": 45.696,
+    "longitude": -121.296,
+    "time": "Sun Apr 06 2014 09:36:53 GMT-0700 (PDT)",
+    "windSpeed": 7,
+    "windBearing": 284,
+    "temperature": 52,
+    "summary": "Overcast"
+  },
+  {
+    "location": "Rooster Rock",
+    "latitude": 45.552,
+    "longitude": -122.226,
+    "time": "Sun Apr 06 2014 09:36:53 GMT-0700 (PDT)",
+    "windSpeed": 3,
+    "windBearing": 208,
+    "temperature": 50,
+    "summary": "Overcast"
+  }
+]
