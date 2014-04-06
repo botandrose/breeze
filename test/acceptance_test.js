@@ -4,8 +4,8 @@ var assert = require('assert');
 var Browser = require('zombie');
 var http = require('http');
 
-
 describe('homepage', function () {
+  this.timeout(0);
   
   before(function() {
     this.server = http.createServer(app).listen(6666);
@@ -14,12 +14,19 @@ describe('homepage', function () {
   });  
  
   beforeEach(function(done) {
-    this.browser.visit('/', done);
+    var browser = this.browser;
+    setTimeout(function() {
+      browser.visit('/', done);
+    }, 8000);
   });
 
-  it("should show a table of locations accompanies by wind speed and wind direction", function () {
-    //Ensure that index.html shows a table of the locations with wind speed and wind direction
-    assert.ok(this.browser.success);
+  it("should show a table of locations accompanies by wind speed and wind direction", function(done) {
+    var browser = this.browser;
+    setTimeout(function() {
+      tableLength = browser.document.querySelectorAll("table").length;
+      assert.strictEqual(tableLength, 10);
+      done();
+    }, 8000);
   });
 });
 
