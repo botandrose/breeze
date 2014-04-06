@@ -156,25 +156,23 @@ function output () {
          return name = "default";
     }   
   }
-}
 
+  //***Standard Express Server Call
+  if(!module.parent) {
+      http.createServer(app).listen(app.get('port'), function(){
+      console.log('Express server listening on port ' + app.get('port'));
+    });
+  }
+}
 
 //***Launch app by sending index.html to the browser ***
 app.get('/', function(req, res){
   res.sendfile('./index.html');
 });
 
-
 //***Send data from the server to browser
 app.get('/data', function(req, res){
   res.json(newOutputArray);
 });
 
-//***Standard Express Server Call
 module.exports = app;
-if(!module.parent) {
-    http.createServer(app).listen(app.get('port'), function(){
-    console.log('Express server listening on port ' + app.get('port'));
-  });
-}
-
