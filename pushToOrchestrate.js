@@ -5,6 +5,7 @@ var moment = require('moment-timezone');
 
 var pushToOrchestrate = function (arrayOfLocations){
 
+  var graphHourlyObject = {};
   arrayOfLocations.forEach(function(item, index) {
 
     var data = JSON.parse(item);
@@ -32,7 +33,7 @@ var pushToOrchestrate = function (arrayOfLocations){
       this.temperature = instance.temperature;
       this.windSpeed = instance.windSpeed;
       this.windDirection = instance.windDirection;
-      this.time = instance.time;
+      this.time = instance.hour;
     };
 
     function LocationInstance(currentInstance, dailyInstance, hourlyInstance){
@@ -41,6 +42,26 @@ var pushToOrchestrate = function (arrayOfLocations){
       this.daily = dailyInstance;
       this.hourly = hourlyInstance;
     };
+
+    function ForecastGraphData(wind){
+      this.time = moment.unix(wind.time).format("ddd hA");
+      this.temperature = wind.temperature;
+      this.windSpeed = wind.windSpeed;
+      this.windBearing = wind.windBearing;
+    }
+
+   //  var windForecast = [];
+
+   // for ( var i = 0; i < 47; i++) {
+   //  var forecastTime = new Date(data.hourly.data[i].time * 1000);
+   //  var forecastConditions = {  "time": forecastTime.toString(),
+   //                              "temperature" : data.hourly.data[i].temperature,
+   //                              "windSpeed" : data.hourly.data[i].windSpeed,
+   //                              "windBearing" : data.hourly.data[i].windBearing };
+
+   //  windForecast.push(forecastConditions);
+   //  console.log(forecastConditions);
+   // }
 
     var current = data.currently; //current data
     var daily = data.daily.data; //daily forecast
@@ -59,9 +80,15 @@ var pushToOrchestrate = function (arrayOfLocations){
 
     var hourlyWind = [];
     //building an array of 48 hrs for location
+
+    var graphHourlyArray = [];
+    //and data need for graph
     hourly.forEach(function (hour){
+      graphHourlyArray.push(new ForecastGraphData(hour));
       hourlyWind.push(new WindInstance(hour, data));
     });
+    
+    graphHourlyObject[currentWind.name] = graphHourlyArray;
 
     var locationInstance = new LocationInstance(currentWind, dailyWind, hourlyWind);
     //one instance of location containing all current and future info
@@ -88,10 +115,10 @@ var pushToOrchestrate = function (arrayOfLocations){
       console.error(err);
     })
     
-    db.put("Locations", currentWind.name, locationInstance);
+    db.put("locations", currentWind.name, locationInstance);
     //pushing entire location instance of current and forecast for location
   });
-  
+  db.put("current", "hourlyGraph", graphHourlyObject);
 
 };
 

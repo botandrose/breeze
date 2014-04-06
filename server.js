@@ -34,6 +34,9 @@ var locations = ["45.722,-121.561",
                  "45.693,-121.878",
                  "45.696,-121.296",
                  "45.552,-122.226"];
+var locationNames= 
+  ["The Hatchery", "Hood River Event Site", "Rock Creek", "Doug's Beach", "Rufus", 
+  "Roosevelt", "Viento", "Stevenson", "Lyle Sand Bar", "Rooster Rock"];
 
 var locationsLength = locations.length + 1;
 var forecastURL ='https://api.forecast.io/forecast/';
@@ -75,41 +78,55 @@ function httpFunction (urlToFetch, index) {
 
   https.get(urlToFetch, function (resp) {
       //One way to work with the stream is with event handlers: data, error, end
-      var body = '';
+    var body = '';
 
-      //When the stream emits a data event
-      resp.on('data', function (chunk) {
-        //console.log(chunk.toString());
-        body += chunk;
-      });
+    //When the stream emits a data event
+    resp.on('data', function (chunk) {
+      //console.log(chunk.toString());
+      body += chunk;
+    });
 
-      resp.on('error', function (err){
-        console.error(err);
-      });
+    resp.on('error', function (err){
+      console.error(err);
+    });
 
-      resp.on('end', function () {
-        counter += 1;
-        asyncArray[index] = body;
-        if (counter === locations.length) {
-          output();
-          pushToOrchestrate(asyncArray);
-        }
-      });
+    resp.on('end', function () {
+      counter += 1;
+      asyncArray[index] = body;
+      if (counter === locations.length) {
+        output();
+        pushToOrchestrate(asyncArray);
+      }
+    });
   });
 }
 
+
+
+function getGraphData48hr (location){
+  db.get('current', 'hourlyGraph')
+  .then(function(result){
+    var graphData = result.body[location];
+    //Arcy use your graph data here an array called graphData
+    console.log(graphData);    
+  })
+  .fail(function(err){
+    console.error(err);
+  })
+};
+
+getGraphData48hr("The Hatchery");
+//Arcy make calls for our data here, with location name
+
 //We will probably push to Orchestrate
 function output () {
-  var locations= 
-  ["The Hatchery", "Hood River Event Site", "Rock Creek", "Doug's Beach", "Rufus", 
-  "Roosevelt", "Viento", "Stevenson", "Lyle Sand Bar", "Rooster Rock"];
 
-  locations.forEach( function(item, index) {
+  locationNames.forEach( function(item, index) {
     var currentConditions;
     db.get("current", item)
     .then(function (result) {
       var data = result.body;
-      console.log("data: ", data);
+      //console.log("data: ", data);
       currentConditions = { "location" : data.name,
                               "icon" : data.icon,
                               //"latitude" : data.latitude,
@@ -124,7 +141,7 @@ function output () {
 
       //Might need comma's between JSON objects
 
-      console.log('CURRENT: ', currentConditions);
+      //console.log('CURRENT: ', currentConditions);
 
       newOutputArray.push(currentConditions);
     })
