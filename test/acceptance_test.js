@@ -9,7 +9,6 @@ describe('homepage', function () {
   
   before(function() {
     this.server = http.createServer(app).listen(6666);
-    // initialize the browser using the same port as the test application
     this.browser = new Browser({ site: 'http://localhost:6666' });
   });  
  
@@ -20,7 +19,7 @@ describe('homepage', function () {
     }, 8000);
   });
 
-  it("should show a table of locations accompanies by wind speed and wind direction", function(done) {
+  it("should show a table of locations with wind speed and wind direction", function(done) {
     var browser = this.browser;
     setTimeout(function() {
       tableLength = browser.document.querySelectorAll("table").length;
@@ -112,54 +111,4 @@ describe('contact page', function() {
   });
 });
 
-
-
-EXAMPLE 2
-
-var Browser = require('zombie'),
-    app = require('../../app'),
-    sinon = require('sinon'),
-    _ = require('underscore');
-
-Load JSON Fixture
-fs.readFile(testData, 'utf8', function (err, data) {
-    if (err) {
-        console.log('Error: ' + err);
-        return;
-    }
-
-    data = JSON.parse(data);
-});
-
-describe('Adding a todo and completing it', function() {
-  
-  var browser, $, ajaxSpy;
-  
-  before(function(done) {
-    app.listen('5000', function() {
-      console.log('Test server listening on 5000');
-      Browser.visit('http://localhost:5000', function(err, b) {
-        browser = b;
-        $ = browser.window.$;
-        ajaxSpy = sinon.spy($, 'ajax');
-        browser.wait(function(){
-          browser.window.$(function(){
-            done();
-          });
-        });
-      });
-    });
-  });
-  
-  it('Adds the todo, renders the todos, and crosses it out when done', function(done) {
-    $('#add-todo').val('Foo').change();
-    browser.wait(function() {
-      $('#todos li').length.should.be.above(2);
-      $('#todos li:last-child .complete-todo').click();
-      JSON.parse(_.last(ajaxSpy.args)[0].data).completed.should.be.ok;
-      $('#todos li:last-child').hasClass('completed').should.be.ok
-      done()
-    });
-  });
-});
 */
