@@ -1,5 +1,5 @@
-process.env.NODE_ENV = 'test';
-var app = require('../server_backbone');
+//process.env.NODE_ENV = 'test';
+var app = require('../server');
 var assert = require('assert');
 var Browser = require('zombie');
 var http = require('http');
@@ -10,7 +10,7 @@ describe('homepage', function () {
   before(function() {
     this.server = http.createServer(app).listen(6666);
     this.browser = new Browser({ site: 'http://localhost:6666' });
-  });  
+  });
  
   beforeEach(function(done) {
     var browser = this.browser;

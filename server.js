@@ -1,5 +1,3 @@
-
-
 /**
  * Module dependencies.
  */
@@ -171,6 +169,20 @@ function output () {
 // }
 
 
+module.exports = app;
+if(!module.parent) {
+  http.createServer(app).listen(app.get('port'), function(){
+    console.log('Express server listening on port ' + app.get('port'));
+  });
+}
+
+
+//***Standard Express Server Call
+//http.createServer(app).listen(app.get('port'), function(){
+//  console.log('Express server listening on port ' + app.get('port'));
+//});
+
+
 //***Launch app by sending index.html to the browser ***
 app.get('/', function(req, res){
   res.sendfile('./index.html');
@@ -186,13 +198,3 @@ app.get('/data', function(req, res){
 app.get('/forecastHourly', function(req, res){
   res.json(hourlyForecastConditions);
 });
-
-
-
-//***Standard Express Server Call
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
-});
-
-
-
