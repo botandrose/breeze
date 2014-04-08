@@ -64,39 +64,7 @@ var fifteenMinutes = function () {
       });
     }
 
-    function output () {
 
-
-      asyncArray.forEach( function(item, index) {
-        //console.log(JSON.parse(item));
-        
-        //Send the data as a separate JSON object
-        var data = JSON.parse(item);
-        var currentTime = new Date(data.currently.time * 1000);
-        var latLoc = data.latitude.toString();
-      
-
-
-        var currentConditions = { "location" : location(latLoc.slice(3,7)),
-                                  "latitude" : data.latitude,
-                                  "longitude" : data.longitude,
-                                  "time" : currentTime.toString(),
-                                  "windSpeed" : Math.round(data.currently.windSpeed),
-                                  "windBearing" : Math.round(data.currently.windBearing),
-                                  "temperature" : Math.round(data.currently.temperature),
-                                  "summary" : data.currently.summary };
-
-        JSON.stringify(currentConditions);
-
-        //Might need comma's between JSON objects
-
-        console.log(currentConditions);
-
-        newOutputArray.push(currentConditions);
-
-
-      }); 
-    }
 
     console.log('When running Jake, if this file prints, Jake is referencing fifteenMinute.js');
 

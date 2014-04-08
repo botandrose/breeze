@@ -21,7 +21,7 @@ var pushToOrchestrate = function (arrayOfLocations){
       this.windDirection = labelDirection(wind.windBearing);
       this.icon = makeIconPath(wind.icon);
       this.summary = wind.summary;
-      this.currentTime = moment.unix(wind.time).tz("America/Los_Angeles").format('M/D hA');
+      this.currentTime = moment.unix(wind.time).tz("America/Los_Angeles").format('M/D hA mm');
       this.day = moment.unix(wind.time).format("M/D ddd")
       this.hour = moment.unix(wind.time).format("ddd hA");
       //different time formats for ease of use
