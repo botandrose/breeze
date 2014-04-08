@@ -151,6 +151,25 @@ function output () {
   });
 }
 
+// outputForecastHourly();
+
+// function outputForecastHourly (data){
+//   var windForecast = [];
+
+//    for ( var i = 0; i < 47; i++) {
+//     var forecastTime = new Date(data.hourly.data[i].time * 1000);
+//     var forecastConditions = {  "time": forecastTime.toString(),
+//                                 "temperature" : data.hourly.data[i].temperature,
+//                                 "windSpeed" : data.hourly.data[i].windSpeed,
+//                                 "windBearing" : data.hourly.data[i].windBearing };
+
+//     JSON.stringify(forecastConditions);
+
+//     hourlyForecastConditions.push(forecastConditions);
+//     console.log(forecastConditions);
+//    }
+// }
+
 
 //***Launch app by sending index.html to the browser ***
 app.get('/', function(req, res){
@@ -158,9 +177,14 @@ app.get('/', function(req, res){
 });
 
 
-//***Send data from the server to browser
+//***Send current conditions data from the server to browser
 app.get('/data', function(req, res){
   res.json(newOutputArray);
+});
+
+//**Send hourly forecast for one location from the server to the browser
+app.get('/forecastHourly', function(req, res){
+  res.json(hourlyForecastConditions);
 });
 
 
@@ -171,15 +195,4 @@ http.createServer(app).listen(app.get('port'), function(){
 });
 
 
-
-// app.get('/data', function (req, res) {
-//   db.get((ourKey), function (err, data) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       console.log(data);
-//       res.json(data);
-//     }
-//   });
-// });
 
