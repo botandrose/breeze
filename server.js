@@ -130,7 +130,7 @@ function output () {
                               "icon" : data.icon,
                               //"latitude" : data.latitude,
                               //"longitude" : data.longitude,
-                              "time" : data.currentTime,
+                              "time" : data.hour,
                               "windSpeed" : data.windSpeed,
                               "windDirection": data.windDirection,
                               "windBearing" : data.windBearing,

@@ -23,7 +23,7 @@ var pushToOrchestrate = function (arrayOfLocations){
       this.summary = wind.summary;
       this.currentTime = moment.unix(wind.time).tz("America/Los_Angeles").format('M/D hA mm');
       this.day = moment.unix(wind.time).format("M/D ddd")
-      this.hour = moment.unix(wind.time).format("ddd hA");
+      this.hour = moment.unix(wind.time).format("ddd hmmA");
       //different time formats for ease of use
 
     };
@@ -161,9 +161,9 @@ var labelDirection = function (windBearing){
 }
 
 var makeIconPath = function(icon){
-  icon += ".png'";
-  var iconSize = " height='64' width='64' align='left'>";
-  return  "<img src = 'js/images/" + icon + iconSize;
+  icon += ".png";
+  var iconSize = " height='128' width='128' align='left'";
+  return  "src = images/" + icon + iconSize;
 }
 
 
