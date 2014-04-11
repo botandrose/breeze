@@ -19,8 +19,9 @@ var app = express();
 
 //Forecast.io URL and login information
 var latLong = "45.5118,-122.6756";
-var apiKey = "a75c248d7b83806b66b281dd33e96e36";
-//var apiKey = "0d6f859a9a370c9ca1e274fe79d23d8e"; //Current key
+//var apiKey = "a75c248d7b83806b66b281dd33e96e36";
+var apiKey = "0d6f859a9a370c9ca1e274fe79d23d8e"; //Current key
+//var apiKey = "b29b1a2fe58b21195f270ab3d6dd1be8"; //Sean's Key
 
 var locations = ["45.722,-121.561",
                  "45.716,-121.512",
@@ -106,7 +107,7 @@ function getGraphData48hr (location){
   .then(function(result){
     var graphData = result.body[location];
     //Arcy use your graph data here an array called graphData
-    console.log(graphData);    
+    //console.log(graphData);    
   })
   .fail(function(err){
     console.error(err);
