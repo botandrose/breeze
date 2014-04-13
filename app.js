@@ -19,7 +19,7 @@ if ('development' == app.get('env')) {
 
 //***Launch app by sending index.html to the browser ***
 app.get('/', function(req, res){
-  res.sendfile('./index.html');
+  res.sendfile('./public/index.html');
 });
 
 //***Send current conditions data from the server to browser
