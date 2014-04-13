@@ -12,7 +12,7 @@ describe('homepage', function () {
   it("should show a table of locations with wind speed and wind direction", function(done) {
     var browser = this.browser;
     browser.visit('/', function() {
-      tableLength = browser.document.querySelectorAll("table").length;
+      tableLength = browser.document.querySelectorAll("tbody tr").length;
       assert.strictEqual(tableLength, 10);
       done();
     });
