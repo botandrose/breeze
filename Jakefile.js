@@ -1,9 +1,8 @@
-var getData = require('./fifteenMinute');
+var Location = require("./location");
+var Forecast = require("./forecast");
 
-desc('This is to fetch Data every 15 minutes from forecast.io.');
-task('getData15', [], function () {
+desc('import location data from forecast.io');
+task('import', function() {
+  Forecast.import();
 });
 
-desc('This is to fetch Data every 24 hours from forecast.io.');
-task('getData24Hr', [], function () {
-});

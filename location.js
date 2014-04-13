@@ -24,7 +24,7 @@ Location = {
     });
 
     Q.all(promises).done(callback);
-  }
+  },
 }
 
 module.exports = Location;
