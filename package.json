@@ -9,6 +9,7 @@
     "moment": "2.5.1",
     "moment-timezone": "0.0.3",
     "orchestrate": "0.0.9",
+    "q": "1.0.1",
     "request": "2.34.0"
   },
   "devDependencies": {
